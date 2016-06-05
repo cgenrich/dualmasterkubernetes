@@ -25,14 +25,4 @@ export VHOSTS_CPU=$cpu
 #define the host names
 
 vagrant up
-
-#loop through hosts and boot strap
-exit 1
-systemctl stop firewalld
-systemctl disable firewalld
-
-yum -y install ntp
-systemctl start ntpd
-systemctl enable ntpd
-
-
+../baseSetup.sh
