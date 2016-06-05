@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure(2) do |config|
+  config.vm.box = "puppetlabs/centos-7.0-64-nocm"
+ config.vm.provider "virtualbox" do |vb|
+   vb.memory = "" + ENV["VHOSTS_MEM"]
+   config.ssh.private_key_path = "../insecure_private_key"
+ end
+
+ boxes=*('0'..ENV["VHOSTS_NUM"])
+ boxes.delete_at(0)
+ boxes << "primary"
+ boxes << "secondary"
+   boxes.each do |name|
+    config.vm.define name do |config|
+    config.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--memory", ""+ENV["VHOSTS_MEM"]]
+      v.customize ["modifyvm", :id, "--cpus", ENV["VHOSTS_CPU"]]
+    end
+    end
+  end
+end
